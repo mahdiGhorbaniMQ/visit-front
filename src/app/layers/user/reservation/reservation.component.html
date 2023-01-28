@@ -1,0 +1,44 @@
+<mat-card class="example-card">
+    <div class="example-button-container">
+        <button class="m-1" (click)="close()" mat-mini-fab aria-label="Example icon button with a home icon">
+          <mat-icon>close</mat-icon>
+        </button>
+    </div>
+    <mat-card-header>
+      <mat-card-subtitle>Reservation</mat-card-subtitle>
+      <mat-card-title>{{reservation && reservation.name}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="pt-4">
+      <p><b>From: </b>{{ reservation && reservation.address }}</p>
+      <p><b>To: </b>{{ reservation && reservation.destination }}</p>
+      <p><b>Status: </b>{{ reservation && reservation.status }}</p>
+      <mat-divider></mat-divider>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-flat-button color="accent" class="mx-3" [disabled]="!reservation || reservation.status !== 'Request sent'" (click)="cancel()">Cancel</button>
+      <button mat-flat-button color="accent" *ngIf="reservation && reservation.status == 'Sending'" (click)="report()">Received</button>
+    </mat-card-actions>
+    <mat-card-footer>
+      <mat-progress-bar *ngIf="!reservation || reservation.status == 'Request sent'" color="accent" mode="indeterminate"></mat-progress-bar>
+    </mat-card-footer>
+</mat-card>
+
+
+<ng-template #reportForm>
+    <h1 mat-dialog-title>Report</h1>
+    <div mat-dialog-content>
+      rate the driver and write your opinion.
+      <form class="row  pt-3" [formGroup]="form">
+        <mat-form-field color="accent" class="col-12">
+            <mat-label>Write a report</mat-label>
+            <textarea formControlName="content" matInput placeholder="Reort"></textarea>
+        </mat-form-field>
+    </form>
+    </div>
+    <div mat-dialog-actions>
+      <button mat-button mat-dialog-close>cancel</button>
+      <button (click)="sendReport()" [disabled]="!form.valid" mat-button mat-dialog-close>Send</button>
+      <!-- <button mat-button mat-dialog-close>No</button>
+      <button mat-button mat-dialog-close cdkFocusInitial>Ok</button> -->
+    </div>
+</ng-template>

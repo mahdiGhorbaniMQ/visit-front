@@ -1,0 +1,50 @@
+<mat-tab-group color="accent">
+    <mat-tab label="Reservation">
+        <div class="container mt-4 col-7">
+            <ng-container *ngIf="!loading && !reservationTab">
+                <form class="row" [formGroup]="form">
+                    <h1 class="text-center">Reservation form</h1>
+
+                    <div class="col-12 my-5 d-flex justify-content-center">
+                        <span class="px-4">
+                            From: 
+                        </span>
+                        <span class="custom-theme-example">
+                            <input placeholder="Custom theme" aria-label="Custom theme"
+                                [ngxTimepicker]="darkPickerFrom" readonly>
+                            <ngx-material-timepicker
+                                            [minutesGap]="5"
+                                            [enableKeyboardInput]="true"
+                                            #darkPickerFrom
+                                            [theme]="darkTheme"></ngx-material-timepicker>
+                        </span>
+                    </div>
+                </form>
+                <div style="position: relative;left: 10px;" class="row d-flex justify-content-center pb-3 mx-3">
+                    <button (click)="reserve()" class="col-4" mat-flat-button color="accent" [disabled]="form.valid">Reserve</button>
+                </div>
+            </ng-container>
+            <ng-container *ngIf="!loading && reservationTab">
+                <app-reservation (onClose)="showForm()" [id]="reservationId"></app-reservation>
+            </ng-container>
+            <ng-container *ngIf="loading">
+                <div class="w-100 d-flex justify-content-center align-items-center" style="height:500px;">
+                    <mat-spinner color="accent" style="width: 150px; height: 150px;"></mat-spinner>
+                </div>
+            </ng-container>
+        </div>
+    </mat-tab>
+    <mat-tab label="History">
+        <div class="container mt-4 col-6">
+            <ng-container *ngIf="selectedReservation">
+                <app-reservation (onClose)="showList()" [id]="selectedReservation"></app-reservation>
+            </ng-container>
+            <ng-container *ngIf="!selectedReservation">
+                <div (click)="selectedReservation = item.id" class="reservation-item m-3 p-3" matRipple *ngFor="let item of allReservations">
+                    <p>{{item.name}}</p>
+                    <p class="mx-3">{{item.destination}}</p>
+                </div>
+            </ng-container>
+        </div>
+    </mat-tab>
+</mat-tab-group>

@@ -1,0 +1,27 @@
+<div class="container mt-4 col-7">    
+    <form class="row" [formGroup]="form">
+        <h1 class="text-center">Registeration</h1>
+        <mat-form-field color="accent" class="col-12 pt-4">
+            <mat-label>Write your full name</mat-label>
+            <input formControlName="name" matInput placeholder="Name">
+        </mat-form-field>
+    
+        <mat-form-field color="accent" class="col-12">
+            <mat-label>Choose a username</mat-label>
+            <input formControlName="username" matInput placeholder="Username">
+        </mat-form-field>
+
+        <mat-form-field color="accent" class="col-12">
+            <mat-label>Choose a password</mat-label>
+            <input [type]="hidePass ? 'password' : 'text'" formControlName="password" type="password" matInput placeholder="password">
+            <button mat-icon-button matSuffix (click)="hidePass = !hidePass" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePass">
+                <mat-icon>{{hidePass ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+
+    </form>
+    <div class="row d-flex justify-content-end pb-3 mx-3">
+        <button [routerLink]="'/login'" class="col-4" mat-button color="warn">Login</button>
+        <button (click)="register()" class="col-4" mat-flat-button color="accent" [disabled]="!form.valid">Register</button>
+    </div>
+</div>

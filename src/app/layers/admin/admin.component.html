@@ -1,0 +1,67 @@
+<mat-tab-group color="accent">
+    <mat-tab label="Work time">
+        <div class="container mt-4 col-6">
+            <form>
+                <h2>Set your work time</h2>
+                <p class="pt-5">
+                    time period:
+                </p>
+
+                <div class="pt-5 row">
+                    <div class="col-6">
+                        <span>
+                            From: 
+                        </span>
+                        <span class="custom-theme-example">
+                            <input placeholder="Custom theme" aria-label="Custom theme"
+                                [ngxTimepicker]="darkPickerFrom" readonly>
+                            <ngx-material-timepicker
+                                            [minutesGap]="5"
+                                            [enableKeyboardInput]="true"
+                                            #darkPickerFrom
+                                            [theme]="darkTheme"></ngx-material-timepicker>
+                        </span>
+                    </div>
+                    <div class="col-6">
+                        <span>
+                            To: 
+                        </span>
+                        <span class="custom-theme-example">
+                            <input placeholder="Custom theme" aria-label="Custom theme"
+                                [ngxTimepicker]="darkPickerTo" readonly>
+                            <ngx-material-timepicker [minutesGap]="5" [enableKeyboardInput]="true" #darkPickerTo [theme]="darkTheme"></ngx-material-timepicker>
+                        </span>    
+                    </div>
+                </div>
+            </form>
+        </div>
+    </mat-tab>
+    <mat-tab label="Reservations">
+        <div class="container mt-4 col-6">
+            <ng-container *ngIf="selectedReservation">
+                <!-- <app-reservation (onClose)="showList()" [id]="selectedReservation"></app-reservation> -->
+            </ng-container>
+            <ng-container *ngIf="!selectedReservation">
+                <div class="reservation-item m-3 p-3 pb-0" *ngFor="let item of allReservations">
+                    <p>{{item.name}}</p>
+                    <p class="mx-3"><b>From: </b>{{ item && item.destination }}</p>
+                    <p class="mx-3"><b>To: </b>{{ item && item.destination }}</p>
+                    <p class="mx-3"><b>Phone: </b>{{ item && item.phone }}</p>
+                    <div class="row pt-2">
+                        <div class="col-8 d-flex align-items-end">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Choose a driver</mat-label>
+                                <mat-select [disabled]="item.status=='Rejected' || item.status=='Sending'" (selectionChange)="assign($event.value,item)">
+                                    <mat-option *ngFor="let driver of allDrivers" [value]="driver">{{driver.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-4 d-flex align-items-center">
+                            <button mat-button color="warn" [disabled]="item.status!=='Request sent'" (click)="reject(item)">Reject</button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+        </div>
+    </mat-tab>
+</mat-tab-group>
